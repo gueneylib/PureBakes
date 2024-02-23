@@ -38,6 +38,11 @@ app.MapControllerRoute(
 
 SeedDatabase();
 
+app.MapRazorPages();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
 app.Run();
 
 void SeedDatabase() {

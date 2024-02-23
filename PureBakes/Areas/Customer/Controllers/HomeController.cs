@@ -1,8 +1,8 @@
+namespace PureBakes.Areas.Customer.Controllers;
+
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PureBakes.Models;
-
-namespace PureBakes.Controllers;
 
 public class HomeController : Controller
 {
