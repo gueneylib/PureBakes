@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureBakes", "PureBakes\PureBakes.csproj", "{ED4AB7D3-F7DB-4FDF-AE84-690E964ABCAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureBakes.Models", "PureBakes.Models\PureBakes.Models.csproj", "{5B1632A5-E374-4760-AB5C-80DE929F4010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureBakes.Data", "PureBakes.Data\PureBakes.Data.csproj", "{C4B4DE48-5979-46C1-B441-CF3009F48552}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{ED4AB7D3-F7DB-4FDF-AE84-690E964ABCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED4AB7D3-F7DB-4FDF-AE84-690E964ABCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED4AB7D3-F7DB-4FDF-AE84-690E964ABCAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B1632A5-E374-4760-AB5C-80DE929F4010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B1632A5-E374-4760-AB5C-80DE929F4010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B1632A5-E374-4760-AB5C-80DE929F4010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B1632A5-E374-4760-AB5C-80DE929F4010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B4DE48-5979-46C1-B441-CF3009F48552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B4DE48-5979-46C1-B441-CF3009F48552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B4DE48-5979-46C1-B441-CF3009F48552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B4DE48-5979-46C1-B441-CF3009F48552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
