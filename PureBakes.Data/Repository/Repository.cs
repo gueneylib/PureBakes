@@ -14,7 +14,7 @@ public class Repository<T> : IRepository<T> where T : class
     public Repository(PureBakesDbContext dbContext)
     {
         _dbContext = dbContext;
-        _dbSet = dbContext.Set<T>();
+        _dbSet = _dbContext.Set<T>();
     }
 
     public IEnumerable<T> GetAll(
