@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PureBakes.Data;
+using PureBakes.Data.Repository;
+using PureBakes.Data.Repository.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<PureBakesDbContext>(options => {
 });
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddRazorPages();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
