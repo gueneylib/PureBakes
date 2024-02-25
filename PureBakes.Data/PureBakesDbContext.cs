@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using PureBakes.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace PureBakes.Data;
-public class PureBakesDbContext: DbContext
+
+
+public class PureBakesDbContext: IdentityDbContext
 {
     public PureBakesDbContext(DbContextOptions<PureBakesDbContext> options) : base(options){}
 

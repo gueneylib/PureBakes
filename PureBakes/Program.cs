@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using PureBakes.Data;
 using PureBakes.Data.Repository;
 using PureBakes.Data.Repository.Interface;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PureBakesDbContextConnection") ?? throw new InvalidOperationException("Connection string 'PureBakesDbContextConnection' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<PureBakesDbContext>(options => {
     options.UseSqlServer(
         builder.Configuration["ConnectionStrings:PureBakesDbConnection"]);
 });
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PureBakesDbContext>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages();
