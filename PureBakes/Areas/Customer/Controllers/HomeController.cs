@@ -29,6 +29,12 @@ public class HomeController : Controller
         return View(product);
     }
 
+    public IActionResult Details(ShoppingCart shoppingCart)
+    {
+        var product = _unitOfWork.Product.Get(productId);
+        return View(product);
+    }
+
     public IActionResult Privacy()
     {
         return View();
