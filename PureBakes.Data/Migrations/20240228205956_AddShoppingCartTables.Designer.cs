@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PureBakes.Data;
 
@@ -11,9 +12,11 @@ using PureBakes.Data;
 namespace PureBakes.Data.Migrations
 {
     [DbContext(typeof(PureBakesDbContext))]
-    partial class PureBakesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240228205956_AddShoppingCartTables")]
+    partial class AddShoppingCartTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,7 +312,7 @@ namespace PureBakes.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShoppingCartId")
+                    b.Property<int?>("ShoppingCartId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -425,15 +428,11 @@ namespace PureBakes.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PureBakes.Models.ShoppingCart", "ShoppingCart")
+                    b.HasOne("PureBakes.Models.ShoppingCart", null)
                         .WithMany("ShoppingCartItem")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShoppingCartId");
 
                     b.Navigation("Product");
-
-                    b.Navigation("ShoppingCart");
                 });
 
             modelBuilder.Entity("PureBakes.Models.ShoppingCart", b =>
