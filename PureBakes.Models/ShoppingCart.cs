@@ -8,13 +8,13 @@ public class ShoppingCart
     public int Id { get; set; }
 
     [ValidateNever]
-    public ICollection<ShoppingCartItem> ShoppingCartItem { get; set; } = Array.Empty<ShoppingCartItem>();
+    public ICollection<ShoppingCartItem> ShoppingCartItem { get; set; } = new List<ShoppingCartItem>();
 
     public string PureBakesUserId { get; set; } = string.Empty;
 
     [ForeignKey(nameof(PureBakesUserId))]
     [ValidateNever]
-    public PureBakesUser PureBakesUser { get; set; } = new ();
+    public PureBakesUser? PureBakesUser { get; set; }
 
     [NotMapped]
     public double TotalPrice { get; set; }

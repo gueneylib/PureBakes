@@ -42,6 +42,45 @@ public class Repository<T> : IRepository<T> where T : class
 
         return query.ToList();
 
+        // var tmp = new List<T>();
+        // foreach (var item in query)
+        // {
+        //     tmp.Add(Get(filter, includeProperties, true));
+        // }
+        //
+        // if (orderBy != null)
+        // {
+        //     return orderBy(tmp.AsQueryable()).ToList();
+        // }
+        //
+        // return tmp.AsEnumerable();
+    }
+
+    public T? Get(Expression<Func<T, bool>>? filter,
+        string includeProperties,
+        bool tracked)
+    {
+        IQueryable<T> query;
+        if (tracked) {
+            query= _dbSet;
+
+        }
+        else {
+            query = _dbSet.AsNoTracking();
+        }
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        foreach (var includeProperty in includeProperties.Split
+                     (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            query = query.Include(includeProperty);
+        }
+
+        return query.FirstOrDefault();
     }
 
     public T? Get(

@@ -10,13 +10,13 @@ public class ShoppingCartItem
 
     [ForeignKey(nameof(ProductId))]
     [ValidateNever]
-    public Product Product { get; set; } = new();
+    public Product? Product { get; set; }
 
     public int ShoppingCartId { get; set; }
 
     [ForeignKey(nameof(ShoppingCartId))]
     [ValidateNever]
-    public ShoppingCart ShoppingCart { get; set; } = new();
+    public ShoppingCart? ShoppingCart { get; set; }
 
     public int Quantity { get; set; } = 0;
 }
