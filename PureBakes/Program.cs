@@ -1,8 +1,11 @@
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using PureBakes.Data;
 using PureBakes.Data.Repository;
 using PureBakes.Data.Repository.Interface;
 using Microsoft.AspNetCore.Identity;
+using PureBakes.Service.Services;
+using PureBakes.Service.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PureBakesDbContextConnection") ?? throw new InvalidOperationException("Connection string 'PureBakesDbContextConnection' not found.");
@@ -20,8 +23,16 @@ builder.Services.AddDbContext<PureBakesDbContext>(options => {
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PureBakesDbContext>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -39,6 +50,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 SeedDatabase();
 

@@ -77,6 +77,10 @@ public class HomeController : Controller
         }
         _unitOfWork.ShoppingCartItem.Update(match);
         _unitOfWork.Save();
+        var currentCartProductsCount = _unitOfWork.ShoppingCartItem
+            .GetAll(u => u.ShoppingCartId == shoppingCartOfUser.Id)
+            .Sum(product => product.Quantity);
+        HttpContext.Session.SetInt32("SessionCart", currentCartProductsCount);
         return RedirectToAction(nameof(Index));
     }
 
