@@ -21,8 +21,8 @@ public class DbInitializer : IDbInitializer
         if (!dbContext.Products.Any())
         {
             dbContext.AddRange(
-                new Product{ Name = "Rye Sourdough Bread", Category = Categories["Bread"], Price = 5.99 },
-                new Product{ Name = "Neapolitan Pizza", Category = Categories["Pizza"], Price = 8.99 }
+                new Product{ Title = "Rye Sourdough Bread", Category = Categories["Bread"], Price = 5.99 },
+                new Product{ Title = "Neapolitan Pizza", Category = Categories["Pizza"], Price = 8.99 }
             );
         }
 
