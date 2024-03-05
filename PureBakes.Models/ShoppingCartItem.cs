@@ -19,4 +19,7 @@ public class ShoppingCartItem
     public ShoppingCart? ShoppingCart { get; set; }
 
     public int Quantity { get; set; } = 0;
+
+    [NotMapped]
+    public double TotalPrice { get; set; }
 }

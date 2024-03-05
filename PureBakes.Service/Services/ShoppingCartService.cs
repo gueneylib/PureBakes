@@ -25,13 +25,18 @@ public class ShoppingCartService(
 
     public int GetShoppingCartProductsQuantity()
     {
-        var userId = identityService.GetUserId();
-        var shoppingCartOfUser = GetShoppingCartByUserId(userId);
-        var currentCartProductsCount = shoppingCartItemRepository
-            .GetAll(u => u.ShoppingCartId == shoppingCartOfUser.Id)
-            .Sum(product => product.Quantity);
+        var currentCartProductsCount = GetAllProductsInCart().Sum(product => product.Quantity);
 
         return currentCartProductsCount;
+    }
+
+    public IEnumerable<ShoppingCartItem> GetAllProductsInCart()
+    {
+        var userId = identityService.GetUserId();
+        var shoppingCartOfUser = GetShoppingCartByUserId(userId);
+        return shoppingCartItemRepository
+            .GetAll(u => u.ShoppingCartId == shoppingCartOfUser.Id,
+                includeProperties: nameof(Product));
     }
 
     public void UpdateCartItem(ShoppingCartItem match)

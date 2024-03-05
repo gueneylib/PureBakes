@@ -1,18 +1,20 @@
 namespace PureBakes.Areas.Customer.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using PureBakes.Data.Repository.Interface;
 using PureBakes.Service.Services.Interface;
 
 [Area("Customer")]
 public class CartController(
-    IShoppingCartService shoppingCartService,
-    IProductService productService) : Controller
+    IShoppingCartService shoppingCartService) : Controller
 {
 
     public IActionResult Index()
     {
-        var allProducts = productService.GetAll();
+        var allProducts = shoppingCartService.GetAllProductsInCart();
+        foreach (var item in allProducts)
+        {
+            item.TotalPrice = item.Quantity * item.Product?.Price ?? 0;
+        }
         return View(allProducts);
     }
 }
