@@ -1,46 +1,30 @@
 namespace PureBakes.ViewComponents;
 
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using PureBakes.Data.Repository.Interface;
+using PureBakes.Service.Constants;
 using PureBakes.Service.Services.Interface;
 
-public class ShoppingCartViewComponent : ViewComponent
+public class ShoppingCartViewComponent(
+    IShoppingCartService shoppingCartService,
+    IIdentityService identityService) : ViewComponent
 {
-    private readonly IShoppingCartService _shoppingCartService;
-
-    public ShoppingCartViewComponent(IShoppingCartService shoppingCartService)
-    {
-        _shoppingCartService = shoppingCartService;
-    }
-
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var claimsIdentity = (ClaimsIdentity)User.Identity;
-        var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
-        if (claim != null) {
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-            if (string.IsNullOrWhiteSpace(userId))
-            {
-                return View(0);
-            }
-
-            if (HttpContext.Session.GetInt32("SessionCart") != null)
-            {
-                return View(HttpContext.Session.GetInt32("SessionCart") ?? 0);
-            }
-
-            var shoppingCartProductsQuantity = _shoppingCartService.GetShoppingCartProductsQuantity();
-            HttpContext.Session.SetInt32("SessionCart", shoppingCartProductsQuantity);
-
-            return View(shoppingCartProductsQuantity);
-
+        var userId = identityService.GetUserId();
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            HttpContext.Session.Clear();
+            return View(0);
         }
 
-        HttpContext.Session.Clear();
-        return View(0);
+        if (HttpContext.Session.GetInt32(SessionConstants.SessionCartCount) != null)
+        {
+            return View(HttpContext.Session.GetInt32(SessionConstants.SessionCartCount) ?? 0);
+        }
 
+        var shoppingCartProductsQuantity = shoppingCartService.GetShoppingCartProductsQuantity();
+        HttpContext.Session.SetInt32(SessionConstants.SessionCartCount, shoppingCartProductsQuantity);
+
+        return View(shoppingCartProductsQuantity);
     }
-
 }

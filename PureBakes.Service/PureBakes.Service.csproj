@@ -11,4 +11,14 @@
       <ProjectReference Include="..\PureBakes.Models\PureBakes.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Factories\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+        <HintPath>..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

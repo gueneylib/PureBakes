@@ -1,17 +1,17 @@
 namespace PureBakes.Areas.Customer.Controllers;
 
 using System.Diagnostics;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using PureBakes.Data.Repository.Interface;
 using PureBakes.Models;
+using PureBakes.Service.Constants;
 using PureBakes.Service.Services.Interface;
 
 [Area("Customer")]
 public class HomeController(
     ILogger<HomeController> logger,
     IShoppingCartService shoppingCartService,
-    IProductService productService)
+    IProductService productService,
+    IIdentityService identityService)
     : Controller
 {
     private readonly ILogger<HomeController> _logger = logger;
@@ -36,18 +36,12 @@ public class HomeController(
     [HttpPost]
     public IActionResult Details(ShoppingCartItem shoppingCartItem)
     {
-        if (User.Identity is not ClaimsIdentity claimsIdentity)
-        {
-            return View(shoppingCartItem);
-        }
-
-        var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var userId = identityService.GetUserId();
         if (string.IsNullOrWhiteSpace(userId))
         {
             return View(shoppingCartItem);
         }
 
-        // In the service, make sure user has a cart or create one
         var shoppingCartOfUser = shoppingCartService.GetShoppingCartByUserId(userId);
 
         // TODO create factory
@@ -70,7 +64,7 @@ public class HomeController(
         shoppingCartService.UpdateCartItem(match);
 
         var currentCartProductsCount = shoppingCartService.GetShoppingCartProductsQuantity();
-        HttpContext.Session.SetInt32("SessionCart", currentCartProductsCount);
+        HttpContext.Session.SetInt32(SessionConstants.SessionCartCount, currentCartProductsCount);
         return RedirectToAction(nameof(Index));
     }
 

@@ -6,7 +6,8 @@ using PureBakes.Models;
 
 public class ShoppingCartService(
     IShoppingCartRepository shoppingCartRepository,
-    IShoppingCartItemRepository shoppingCartItemRepository) : IShoppingCartService
+    IShoppingCartItemRepository shoppingCartItemRepository,
+    IIdentityService identityService) : IShoppingCartService
 {
     public ShoppingCart GetShoppingCartByUserId(string userId)
     {
@@ -22,23 +23,15 @@ public class ShoppingCartService(
         return shoppingCartOfUser;
     }
 
-    public void CreateShoppingCartForUserIfNecessary(string userId)
-    {
-        var userCart = shoppingCartRepository.GetAll().FirstOrDefault(x => x.PureBakesUserId == userId);
-        if (userCart is null)
-        {
-            _ = CreateShoppingCartForUser(userId);
-        }
-    }
-
     public int GetShoppingCartProductsQuantity()
     {
-
-        // TODO inject user (create service for it)
+        var userId = identityService.GetUserId();
         var shoppingCartOfUser = GetShoppingCartByUserId(userId);
         var currentCartProductsCount = shoppingCartItemRepository
             .GetAll(u => u.ShoppingCartId == shoppingCartOfUser.Id)
             .Sum(product => product.Quantity);
+
+        return currentCartProductsCount;
     }
 
     public void UpdateCartItem(ShoppingCartItem match)
