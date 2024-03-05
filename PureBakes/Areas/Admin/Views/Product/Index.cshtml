@@ -30,23 +30,28 @@
 <!-- Product list table -->
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Actions</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.Title</td>
-                <td>@product.Price</td>
-                <td>
-                    <a asp-action="Upsert" asp-route-productId="@product.Id" class="btn btn-sm btn-info"> <i class="bi bi-pencil-square"></i> Edit</a>
-                    <a asp-action="Delete" asp-route-productId="@product.Id" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-                </td>
-            </tr>
-        }
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.Title</td>
+            <td>@product.Price</td>
+            <td>
+                <a asp-action="Upsert" asp-route-productId="@product.Id" class="btn btn-sm btn-info"> <i class="bi bi-pencil-square"></i> Edit</a>
+                <a onClick="Delete('/admin/product/delete/@product.Id')" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
+
+@section Scripts{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/product.js"></script>
+}

@@ -51,6 +51,7 @@ public class ProductController(
                 var oldImagePath =
                     Path.Combine(wwwRootPath, product.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
 
+                // TODO create service for file operations
                 if (System.IO.File.Exists(oldImagePath))
                 {
                     System.IO.File.Delete(oldImagePath);
@@ -66,19 +67,27 @@ public class ProductController(
         }
         if (product.Id == 0)
         {
+            TempData["success"] = "Product added successfully";
             productService.Add(product);
         }
         else
         {
+            TempData["success"] = "Product updated successfully";
             productService.Update(product);
         }
         return RedirectToAction(nameof(Index));
     }
 
     [HttpDelete]
-    public IActionResult Delete()
+    public IActionResult Delete(int productId)
     {
-        var allProducts = productService.GetAll();
-        return RedirectToAction("Index");
+        var deletedSuccessfully = productService.Remove(productId);
+
+        if (!deletedSuccessfully)
+        {
+            return Json(new { success = false, message = "Error while deleting" });
+        }
+
+        return Json(new { success = true, message = "Delete Successful" });
     }
 }
