@@ -26,7 +26,9 @@ function Delete(url) {
                         toastr.error(data.message);
                     }
 
-                    location.reload();
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
             })
         }
