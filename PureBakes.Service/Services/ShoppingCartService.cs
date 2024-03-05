@@ -4,12 +4,13 @@ using PureBakes.Data.Repository.Interface;
 using PureBakes.Service.Services.Interface;
 using PureBakes.Models;
 
-public class ShoppingCartService(IUnitOfWork unitOfWork) : IShoppingCartService
+public class ShoppingCartService(
+    IShoppingCartRepository shoppingCartRepository,
+    IShoppingCartItemRepository shoppingCartItemRepository) : IShoppingCartService
 {
     public ShoppingCart GetShoppingCartByUserId(string userId)
     {
-        var shoppingCartOfUser = unitOfWork
-            .ShoppingCart
+        var shoppingCartOfUser = shoppingCartRepository
             .Get(x => x.PureBakesUserId == userId,
                 nameof(ShoppingCart.ShoppingCartItem));
 
@@ -23,11 +24,27 @@ public class ShoppingCartService(IUnitOfWork unitOfWork) : IShoppingCartService
 
     public void CreateShoppingCartForUserIfNecessary(string userId)
     {
-        var userCart = unitOfWork.ShoppingCart.GetAll().FirstOrDefault(x => x.PureBakesUserId == userId);
+        var userCart = shoppingCartRepository.GetAll().FirstOrDefault(x => x.PureBakesUserId == userId);
         if (userCart is null)
         {
             _ = CreateShoppingCartForUser(userId);
         }
+    }
+
+    public int GetShoppingCartProductsQuantity()
+    {
+
+        // TODO inject user (create service for it)
+        var shoppingCartOfUser = GetShoppingCartByUserId(userId);
+        var currentCartProductsCount = shoppingCartItemRepository
+            .GetAll(u => u.ShoppingCartId == shoppingCartOfUser.Id)
+            .Sum(product => product.Quantity);
+    }
+
+    public void UpdateCartItem(ShoppingCartItem match)
+    {
+        shoppingCartItemRepository.Update(match);
+        shoppingCartItemRepository.Save();
     }
 
     private ShoppingCart CreateShoppingCartForUser(string userId)
@@ -36,8 +53,8 @@ public class ShoppingCartService(IUnitOfWork unitOfWork) : IShoppingCartService
         {
             PureBakesUserId = userId
         };
-        unitOfWork.ShoppingCart.Add(newCart);
-        unitOfWork.Save();
+        shoppingCartRepository.Add(newCart);
+        shoppingCartRepository.Save();
 
         return newCart;
     }

@@ -8,32 +8,23 @@ using PureBakes.Models;
 using PureBakes.Service.Services.Interface;
 
 [Area("Customer")]
-public class HomeController : Controller
+public class HomeController(
+    ILogger<HomeController> logger,
+    IShoppingCartService shoppingCartService,
+    IProductService productService)
+    : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    // TODO drop this UnitOfWork. Use services for each repo instead
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IShoppingCartService _shoppingCartService;
-
-    public HomeController(
-        ILogger<HomeController> logger,
-        IUnitOfWork unitOfWork,
-        IShoppingCartService shoppingCartService)
-    {
-        _logger = logger;
-        _unitOfWork = unitOfWork;
-        _shoppingCartService = shoppingCartService;
-    }
+    private readonly ILogger<HomeController> _logger = logger;
 
     public IActionResult Index()
     {
-        var allProducts = _unitOfWork.Product.GetAll(includeProperties: "Category");
+        var allProducts = productService.GetAll();
         return View(allProducts);
     }
 
     public IActionResult Details(int productId)
     {
-        var product = _unitOfWork.Product.Get(productId);
+        var product = productService.Get(productId);
         var item = new ShoppingCartItem
         {
             Product = product,
@@ -57,7 +48,7 @@ public class HomeController : Controller
         }
 
         // In the service, make sure user has a cart or create one
-        var shoppingCartOfUser = _shoppingCartService.GetShoppingCartByUserId(userId);
+        var shoppingCartOfUser = shoppingCartService.GetShoppingCartByUserId(userId);
 
         // TODO create factory
         var match = shoppingCartOfUser.ShoppingCartItem.FirstOrDefault(x => x.ProductId == shoppingCartItem.ProductId);
@@ -75,11 +66,10 @@ public class HomeController : Controller
             };
             // shoppingCartOfUser.ShoppingCartItem.Add(match);
         }
-        _unitOfWork.ShoppingCartItem.Update(match);
-        _unitOfWork.Save();
-        var currentCartProductsCount = _unitOfWork.ShoppingCartItem
-            .GetAll(u => u.ShoppingCartId == shoppingCartOfUser.Id)
-            .Sum(product => product.Quantity);
+
+        shoppingCartService.UpdateCartItem(match);
+
+        var currentCartProductsCount = shoppingCartService.GetShoppingCartProductsQuantity();
         HttpContext.Session.SetInt32("SessionCart", currentCartProductsCount);
         return RedirectToAction(nameof(Index));
     }

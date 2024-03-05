@@ -2,20 +2,17 @@ namespace PureBakes.Areas.Customer.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using PureBakes.Data.Repository.Interface;
+using PureBakes.Service.Services.Interface;
 
 [Area("Customer")]
-public class CartController : Controller
+public class CartController(
+    IShoppingCartService shoppingCartService,
+    IProductService productService) : Controller
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CartController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
 
     public IActionResult Index()
     {
-        var allProducts = _unitOfWork.Product.GetAll(includeProperties: "Category");
+        var allProducts = productService.GetAll();
         return View(allProducts);
     }
 }

@@ -7,12 +7,10 @@ using PureBakes.Service.Services.Interface;
 
 public class ShoppingCartViewComponent : ViewComponent
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IShoppingCartService _shoppingCartService;
 
-    public ShoppingCartViewComponent(IUnitOfWork unitOfWork, IShoppingCartService shoppingCartService)
+    public ShoppingCartViewComponent(IShoppingCartService shoppingCartService)
     {
-        _unitOfWork = unitOfWork;
         _shoppingCartService = shoppingCartService;
     }
 
@@ -33,13 +31,10 @@ public class ShoppingCartViewComponent : ViewComponent
                 return View(HttpContext.Session.GetInt32("SessionCart") ?? 0);
             }
 
-            var shoppingCartOfUser = _shoppingCartService.GetShoppingCartByUserId(userId);
-            var currentCartProductsCount = _unitOfWork.ShoppingCartItem
-                .GetAll(u => u.ShoppingCartId == shoppingCartOfUser.Id)
-                .Sum(product => product.Quantity);
-            HttpContext.Session.SetInt32("SessionCart", currentCartProductsCount);
+            var shoppingCartProductsQuantity = _shoppingCartService.GetShoppingCartProductsQuantity();
+            HttpContext.Session.SetInt32("SessionCart", shoppingCartProductsQuantity);
 
-            return View(currentCartProductsCount);
+            return View(shoppingCartProductsQuantity);
 
         }
 
