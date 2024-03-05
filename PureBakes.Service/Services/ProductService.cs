@@ -15,4 +15,16 @@ public class ProductService(IProductRepository productRepository) : IProductServ
     {
         return productRepository.Get(productId, includeProperties: "Category") ?? new Product();
     }
+
+    public void Add(Product product)
+    {
+        productRepository.Add(product);
+        productRepository.Save();
+    }
+
+    public void Update(Product product)
+    {
+        productRepository.Update(product);
+        productRepository.Save();
+    }
 }

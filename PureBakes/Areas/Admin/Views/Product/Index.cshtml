@@ -1,0 +1,52 @@
+@model IEnumerable<PureBakes.Models.Product>
+
+<h1>Product List</h1>
+
+<!-- Add button to add new products -->
+<a asp-action="Upsert" class="btn btn-primary mb-3">Add New Product</a>
+
+@* <div class="row m-2"> *@
+@*     <div class="col-md-4"> *@
+@*         <!-- Dropdown for sorting --> *@
+@*         <div class="form-group"> *@
+@*             <label for="sortDropdown">Sort By:</label> *@
+@*             <select id="sortDropdown" class="dropdown"> *@
+@*                 <option value="Name">Name</option> *@
+@*                 <option value="Price">Price</option> *@
+@*                 <!-- Add other sorting options here --> *@
+@*             </select> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+@* <div class="row m-2"> *@
+@*     <div class="col-md-4"> *@
+@*         <!-- Filter input field --> *@
+@*         <div class="form-group"> *@
+@*             <input type="text" id="filterInput" class="form-control" placeholder="Filter by name..."> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+
+<!-- Product list table -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Title</td>
+                <td>@product.Price</td>
+                <td>
+                    <a asp-action="Upsert" asp-route-productId="@product.Id" class="btn btn-sm btn-info"> <i class="bi bi-pencil-square"></i> Edit</a>
+                    <a asp-action="Delete" asp-route-productId="@product.Id" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
