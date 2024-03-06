@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using PureBakes.Service.Constants
 @inject IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
@@ -30,10 +31,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
-                        </li>
-
+                        @if (User.IsInRole(RoleConstants.Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                 @await Component.InvokeAsync("ShoppingCart")
