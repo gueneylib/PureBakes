@@ -45,6 +45,48 @@ public class ShoppingCartService(
         shoppingCartItemRepository.Save();
     }
 
+    // TODO make Increment and Decrement DRY
+    public bool IncrementProductQuantity(int cartItemId)
+    {
+        var cartItem = shoppingCartItemRepository.Get(cartItemId);
+        if (cartItem is null)
+        {
+            return false;
+        }
+
+        cartItem.Quantity += 1;
+        shoppingCartItemRepository.Update(cartItem);
+        shoppingCartItemRepository.Save();
+        return true;
+    }
+
+    public bool DecrementProductQuantity(int cartItemId)
+    {
+        var cartItem = shoppingCartItemRepository.Get(cartItemId);
+        if (cartItem is null)
+        {
+            return false;
+        }
+
+        cartItem.Quantity -= 1;
+        shoppingCartItemRepository.Update(cartItem);
+        shoppingCartItemRepository.Save();
+        return true;
+    }
+
+    public bool RemoveProductFromCart(int cartItemId)
+    {
+        var cartItem = shoppingCartItemRepository.Get(cartItemId);
+        if (cartItem is null)
+        {
+            return false;
+        }
+
+        shoppingCartItemRepository.Remove(cartItem);
+        shoppingCartItemRepository.Save();
+        return true;
+    }
+
     private ShoppingCart CreateShoppingCartForUser(string userId)
     {
         var newCart = new ShoppingCart

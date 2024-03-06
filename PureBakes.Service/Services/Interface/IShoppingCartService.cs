@@ -8,4 +8,7 @@ public interface IShoppingCartService
     int GetShoppingCartProductsQuantity();
     void UpdateCartItem(ShoppingCartItem match);
     IEnumerable<ShoppingCartItem> GetAllProductsInCart();
+    bool IncrementProductQuantity(int cartItemId);
+    bool DecrementProductQuantity(int cartItemId);
+    bool RemoveProductFromCart(int cartItemId);
 }
