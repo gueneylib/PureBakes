@@ -2,11 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PureBakes.Areas.Admin.Controllers;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PureBakes.Models;
+using PureBakes.Service.Constants;
 using PureBakes.Service.Services.Interface;
 
 [Area("Admin")]
+[Authorize(Roles = RoleConstants.Admin)]
 public class ProductController(
     IProductService productService,
     ICategoryService categoryService,

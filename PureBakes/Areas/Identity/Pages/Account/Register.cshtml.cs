@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace PureBakes.Areas.Identity.Pages.Account
 {
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using PureBakes.Service.Constants;
 
     public class RegisterModel : PageModel
@@ -95,16 +97,24 @@ namespace PureBakes.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public string? Role { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> RoleList { get; set; }
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!_roleManager.RoleExistsAsync(RoleConstants.Customer).GetAwaiter().GetResult()) {
-                _roleManager.CreateAsync(new IdentityRole(RoleConstants.Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(RoleConstants.Employee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(RoleConstants.Admin)).GetAwaiter().GetResult();
-            }
+            Input = new InputModel
+            {
+                RoleList = _roleManager.Roles.Select(x => x.Name)
+                    .Select(i => new SelectListItem
+                    {
+                        Text = i,
+                        Value = i
+                    })
+            };
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -124,6 +134,15 @@ namespace PureBakes.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if (!String.IsNullOrEmpty(Input.Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, RoleConstants.Customer);
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

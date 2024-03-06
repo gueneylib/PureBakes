@@ -1,16 +1,12 @@
 namespace PureBakes.Data;
 
+using Microsoft.AspNetCore.Identity;
 using PureBakes.Models;
 
-public class DbInitializer : IDbInitializer
+public class DbInitializer(
+    PureBakesDbContext dbContext,
+    RoleManager<IdentityRole> roleManager) : IDbInitializer
 {
-    private readonly PureBakesDbContext dbContext;
-
-    public DbInitializer(PureBakesDbContext dbContext)
-    {
-        this.dbContext = dbContext;
-    }
-
     public void Initialize()
     {
         if (!dbContext.Categories.Any())
@@ -24,6 +20,13 @@ public class DbInitializer : IDbInitializer
                 new Product{ Title = "Rye Sourdough Bread", Category = Categories["Bread"], Price = 5.99 },
                 new Product{ Title = "Neapolitan Pizza", Category = Categories["Pizza"], Price = 8.99 }
             );
+        }
+
+        // TODO resolve circular reference to use RoleConstants in Service project
+        if (!roleManager.RoleExistsAsync("Customer").GetAwaiter().GetResult()) {
+            roleManager.CreateAsync(new IdentityRole("Customer")).GetAwaiter().GetResult();
+            roleManager.CreateAsync(new IdentityRole("Employee")).GetAwaiter().GetResult();
+            roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
         }
 
         dbContext.SaveChanges();
