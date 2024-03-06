@@ -1,6 +1,7 @@
 namespace PureBakes.Areas.Customer.Controllers;
 
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PureBakes.Models;
 using PureBakes.Service.Constants;
@@ -34,6 +35,7 @@ public class HomeController(
     }
 
     [HttpPost]
+    [Authorize]
     public IActionResult Details(ShoppingCartItem shoppingCartItem)
     {
         var userId = identityService.GetUserId();
