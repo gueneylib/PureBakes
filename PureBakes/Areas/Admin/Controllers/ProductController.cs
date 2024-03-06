@@ -21,17 +21,17 @@ public class ProductController(
     public IActionResult Upsert(int? productId)
     {
         var categories = categoryService.GetAll().Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+        var productViewModel = new ProductViewModel()
+        {
+            CategoryList = categories
+        };
         if (productId is null)
         {
-            return View(new ProductViewModel{CategoryList = categories});
+            return View(productViewModel);
         }
 
         var product = productService.Get(productId.GetValueOrDefault());
-        var productViewModel = new ProductViewModel()
-        {
-            Product = product,
-            CategoryList = categories
-        };
+        productViewModel.Product = product;
 
         return View(productViewModel);
     }
@@ -39,6 +39,20 @@ public class ProductController(
     [HttpPost]
     public IActionResult Upsert(Product product, IFormFile? file)
     {
+        if (product.Title.ToLower().Contains("cake"))
+        {
+            ModelState.AddModelError("Product.Title", "Cake is not supported in PureBakes!");
+        }
+        if (!ModelState.IsValid)
+        {
+            var categories = categoryService.GetAll().Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+            var productViewModel = new ProductViewModel
+            {
+                Product = product,
+                CategoryList = categories
+            };
+            return View(productViewModel);
+        }
         string wwwRootPath = webHostEnvironment.WebRootPath;
         if (file != null)
         {

@@ -15,7 +15,6 @@ function Delete(url) {
                 success: function (data) {
                     console.log('success function called with data:', data);
                     console.log('controller called with url:', url);
-                    // window.location.href = "Product"
 
                     if(data.success)
                     {
