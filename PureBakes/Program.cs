@@ -4,6 +4,7 @@ using PureBakes.Data;
 using PureBakes.Data.Repository;
 using PureBakes.Data.Repository.Interface;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using PureBakes.Service.Services;
 using PureBakes.Service.Services.Interface;
 
@@ -20,7 +21,7 @@ builder.Services.AddDbContext<PureBakesDbContext>(options => {
         builder.Configuration["ConnectionStrings:PureBakesDbConnection"]);
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PureBakesDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<PureBakesDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
