@@ -34,7 +34,7 @@ public class ProductController(
         }
 
         var product = productService.Get(productId.GetValueOrDefault());
-        productViewModel.Product = product;
+        productViewModel.Product = product ?? new Product();
 
         return View(productViewModel);
     }
