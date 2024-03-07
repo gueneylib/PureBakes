@@ -65,33 +65,14 @@ public class ShoppingCartService(
         shoppingCartItemRepository.Save();
     }
 
-    // TODO make Increment and Decrement DRY
     public bool IncrementProductQuantity(int cartItemId)
     {
-        var cartItem = shoppingCartItemRepository.Get(cartItemId);
-        if (cartItem is null)
-        {
-            return false;
-        }
-
-        cartItem.Quantity += 1;
-        shoppingCartItemRepository.Update(cartItem);
-        shoppingCartItemRepository.Save();
-        return true;
+        return IncrementOrDecrementProductQuantity(cartItemId, 1);
     }
 
     public bool DecrementProductQuantity(int cartItemId)
     {
-        var cartItem = shoppingCartItemRepository.Get(cartItemId);
-        if (cartItem is null)
-        {
-            return false;
-        }
-
-        cartItem.Quantity -= 1;
-        shoppingCartItemRepository.Update(cartItem);
-        shoppingCartItemRepository.Save();
-        return true;
+        return IncrementOrDecrementProductQuantity(cartItemId, -1);
     }
 
     public bool RemoveProductFromCart(int cartItemId)
@@ -103,6 +84,20 @@ public class ShoppingCartService(
         }
 
         shoppingCartItemRepository.Remove(cartItem);
+        shoppingCartItemRepository.Save();
+        return true;
+    }
+
+    private bool IncrementOrDecrementProductQuantity(int cartItemId, int quantity)
+    {
+        var cartItem = shoppingCartItemRepository.Get(cartItemId);
+        if (cartItem is null)
+        {
+            return false;
+        }
+
+        cartItem.Quantity += quantity;
+        shoppingCartItemRepository.Update(cartItem);
         shoppingCartItemRepository.Save();
         return true;
     }
