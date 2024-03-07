@@ -11,11 +11,11 @@ using PureBakes.Service.Services.Interface;
 [Area("Admin")]
 [Authorize(Roles = RoleConstants.Admin)]
 public class ProductController(
-    ILogger<ProductController> logger,
+    ILogService<ProductController> logService,
     IProductService productService,
     ICategoryService categoryService,
     IFileService fileService)
-    : PureBakesBaseController(logger)
+    : PureBakesBaseController(logService)
 {
     public IActionResult Index()
     {
@@ -26,7 +26,7 @@ public class ProductController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             return RedirectToAction(nameof(Error));
         }
     }
@@ -52,7 +52,7 @@ public class ProductController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             return RedirectToAction(nameof(Error));
         }
     }
@@ -92,7 +92,7 @@ public class ProductController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             TempData["error"] = $"Something went wrong: {ex.Message}";
 
             var productViewModel = CreateProductViewModel(product);
@@ -129,7 +129,7 @@ public class ProductController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             return Json(new { success = false, message = "Error while deleting" });
         }
     }

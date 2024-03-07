@@ -9,9 +9,9 @@ using PureBakes.Service.Services.Interface;
 [Area("Customer")]
 [Authorize]
 public class CartController(
-    ILogger<CartController> logger,
+    ILogService<CartController> logService,
     IShoppingCartService shoppingCartService)
-    : PureBakesBaseController(logger)
+    : PureBakesBaseController(logService)
 {
 
     public IActionResult Index()
@@ -33,7 +33,7 @@ public class CartController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             return RedirectToAction(nameof(Error));
         }
     }
@@ -47,7 +47,7 @@ public class CartController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             TempData["error"] = $"Something went wrong: {ex.Message}";
         }
 
@@ -63,7 +63,7 @@ public class CartController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             TempData["error"] = $"Something went wrong: {ex.Message}";
         }
 
@@ -79,7 +79,7 @@ public class CartController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             TempData["error"] = $"Something went wrong: {ex.Message}";
         }
         return RedirectToAction(nameof(Index));

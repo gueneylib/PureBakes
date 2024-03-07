@@ -3,10 +3,11 @@ namespace PureBakes;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PureBakes.Models;
+using PureBakes.Service.Services.Interface;
 
-public class PureBakesBaseController(ILogger<PureBakesBaseController> logger) : Controller
+public class PureBakesBaseController(ILogService<PureBakesBaseController> logService) : Controller
 {
-    private ILogger<PureBakesBaseController>  _logger { get; set; } = logger;
+    private ILogService<PureBakesBaseController>  LogService { get; set; } = logService;
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

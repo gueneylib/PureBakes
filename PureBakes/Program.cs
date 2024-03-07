@@ -38,6 +38,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped(typeof(ILogService<>), typeof(LogService<>));
 
 // View specific (asp.net specific) Services:
 builder.Services.AddScoped<IEmailSender, EmailSender>();

@@ -8,10 +8,10 @@ using PureBakes.Service.Services.Interface;
 
 [Area("Customer")]
 public class HomeController(
-    ILogger<HomeController> logger,
+    ILogService<HomeController> logService,
     IShoppingCartService shoppingCartService,
     IProductService productService)
-    : PureBakesBaseController(logger)
+    : PureBakesBaseController(logService)
 {
     public IActionResult Index()
     {
@@ -22,7 +22,7 @@ public class HomeController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             return RedirectToAction(nameof(Error));
         }
     }
@@ -41,7 +41,7 @@ public class HomeController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             return RedirectToAction(nameof(Error));
         }
     }
@@ -59,7 +59,7 @@ public class HomeController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             TempData["error"] = $"Something went wrong: {ex.Message}";
         }
 
@@ -74,7 +74,7 @@ public class HomeController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logService.LogError(ex, ex.Message);
             return RedirectToAction(nameof(Error));
         }
     }

@@ -1,7 +1,7 @@
 namespace Purebakes.Tests.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using PureBakes;
 using PureBakes.Areas.Customer.Controllers;
 using PureBakes.Models;
 using PureBakes.Service.Services.Interface;
@@ -22,7 +22,7 @@ public class HomeControllerTests
             .Returns(products);
 
         var sut = new HomeController(
-            new Mock<ILogger<HomeController>>().Object,
+            new Mock<ILogService<HomeController>>().Object,
             new Mock<IShoppingCartService>().Object,
             productServiceMock.Object);
 
@@ -45,7 +45,7 @@ public class HomeControllerTests
             .Setup(productService => productService.GetAll())
             .Throws(exception);
 
-        var logServiceMock = new Mock<ILogger<HomeController>>();
+        var logServiceMock = new Mock<ILogService<HomeController>>();
 
         var sut = new HomeController(
             logServiceMock.Object,
@@ -58,6 +58,7 @@ public class HomeControllerTests
         // Assert
         logServiceMock.Verify(logger => logger.LogError(exception, exception.Message), Times.Once);
         var viewResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal(nameof(PureBakesBaseController.Error), viewResult.ActionName);
 
     }
 }
