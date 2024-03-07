@@ -8,6 +8,8 @@
             </div>
             <div class="col-md-6">
                 <h2>@Model.Product.Title</h2>
+
+                <h4>@Html.Raw(Model.Product.Description)</h4>
                 <p class="lead">Price: <strong>@Model.Product.Price.ToString("C")</strong></p>
                 <hr>
                 <input type="hidden" asp-for="ProductId" />

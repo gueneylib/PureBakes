@@ -25,6 +25,7 @@ function Delete(url) {
                         toastr.error(data.message);
                     }
 
+                    // Todo find a better solution
                     setTimeout(function() {
                         location.reload();
                     }, 2000);
