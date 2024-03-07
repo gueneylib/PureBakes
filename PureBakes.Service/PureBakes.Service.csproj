@@ -12,12 +12,4 @@
       <ProjectReference Include="..\PureBakes.Models\PureBakes.Models.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Factories\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Frameworkreference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
-
 </Project>

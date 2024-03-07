@@ -1,4 +1,4 @@
-namespace PureBakes.Service.Services;
+namespace PureBakes.Services;
 
 using Microsoft.AspNetCore.Identity.UI.Services;
 

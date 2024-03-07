@@ -1,4 +1,4 @@
-namespace PureBakes.Service.Services;
+namespace PureBakes.Services;
 
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;

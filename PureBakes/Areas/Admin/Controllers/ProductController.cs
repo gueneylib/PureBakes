@@ -14,7 +14,7 @@ public class ProductController(
     ILogger<ProductController> logger,
     IProductService productService,
     ICategoryService categoryService,
-    IWebHostEnvironment webHostEnvironment)
+    IFileService fileService)
     : PureBakesBaseController(logger)
 {
     public IActionResult Index()
@@ -70,39 +70,14 @@ public class ProductController(
 
             if (!ModelState.IsValid)
             {
-                var categories = categoryService.GetAll().Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-                var productViewModel = new ProductViewModel
-                {
-                    Product = product,
-                    CategoryList = categories
-                };
+                var productViewModel = CreateProductViewModel(product);
                 return View(productViewModel);
             }
-            string wwwRootPath = webHostEnvironment.WebRootPath;
+
             if (file != null)
             {
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string productPath = Path.Combine(wwwRootPath, $@"images{Path.DirectorySeparatorChar}product");
-
-                if (!string.IsNullOrEmpty(product.ImageUrl))
-                {
-                    //delete the old image
-                    var oldImagePath =
-                        Path.Combine(wwwRootPath, product.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
-
-                    // TODO create service for file operations
-                    if (System.IO.File.Exists(oldImagePath))
-                    {
-                        System.IO.File.Delete(oldImagePath);
-                    }
-                }
-
-                using (var fileStream = new FileStream(Path.Combine(productPath, fileName),FileMode.Create))
-                {
-                    file.CopyTo(fileStream);
-                }
-
-                product.ImageUrl = $@"{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}product{Path.DirectorySeparatorChar}" + fileName;
+                fileService.RemoveOldImageIfExists(product.ImageUrl);
+                product.ImageUrl = fileService.AddImageToProduct(file.OpenReadStream(), file.FileName).GetAwaiter().GetResult();
             }
             if (product.Id == 0)
             {
@@ -119,9 +94,23 @@ public class ProductController(
         {
             logger.LogError(ex, ex.Message);
             TempData["error"] = $"Something went wrong: {ex.Message}";
+
+            var productViewModel = CreateProductViewModel(product);
+            return View(productViewModel);
         }
 
         return RedirectToAction(nameof(Index));
+    }
+
+    private ProductViewModel CreateProductViewModel(Product product)
+    {
+        var categories = categoryService.GetAll().Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+        var productViewModel = new ProductViewModel
+        {
+            Product = product,
+            CategoryList = categories
+        };
+        return productViewModel;
     }
 
     [HttpDelete]

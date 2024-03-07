@@ -1,14 +1,12 @@
 namespace PureBakes.Service.Services;
 
-using Microsoft.AspNetCore.Hosting;
 using PureBakes.Data.Repository.Interface;
 using PureBakes.Models;
 using PureBakes.Service.Services.Interface;
 
-// TODO webhostenvironment has frameworkreference to asp.net. does this really belong to the service layer?
 public class ProductService(
     IProductRepository productRepository,
-    IWebHostEnvironment webHostEnvironment) : IProductService
+    IFileService fileService) : IProductService
 {
     public IEnumerable<Product> GetAll()
     {
@@ -40,17 +38,9 @@ public class ProductService(
             return false;
         }
 
-        if (!string.IsNullOrEmpty(product.ImageUrl))
+        if (!string.IsNullOrWhiteSpace(product.ImageUrl))
         {
-            var oldImagePath =
-                Path.Combine(webHostEnvironment.WebRootPath,
-                    product.ImageUrl.TrimStart(Path.DirectorySeparatorChar));
-
-            // TODO create service for file operations
-            if (System.IO.File.Exists(oldImagePath))
-            {
-                System.IO.File.Delete(oldImagePath);
-            }
+            fileService.RemoveOldImageIfExists(product.ImageUrl);
         }
 
         productRepository.Remove(product);
