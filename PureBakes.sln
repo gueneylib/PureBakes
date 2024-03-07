@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureBakes.Data", "PureBakes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureBakes.Service", "PureBakes.Service\PureBakes.Service.csproj", "{3DBC45D8-8B0A-4DD6-AB24-BF592AC0863C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Purebakes.Tests", "Purebakes.Tests\Purebakes.Tests.csproj", "{9F47A29D-A9D2-4F86-865F-71AB92503A14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{3DBC45D8-8B0A-4DD6-AB24-BF592AC0863C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DBC45D8-8B0A-4DD6-AB24-BF592AC0863C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DBC45D8-8B0A-4DD6-AB24-BF592AC0863C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F47A29D-A9D2-4F86-865F-71AB92503A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F47A29D-A9D2-4F86-865F-71AB92503A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F47A29D-A9D2-4F86-865F-71AB92503A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F47A29D-A9D2-4F86-865F-71AB92503A14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
