@@ -7,43 +7,79 @@ using PureBakes.Service.Services.Interface;
 
 [Area("Customer")]
 public class CartController(
-    IShoppingCartService shoppingCartService) : Controller
+    ILogger<CartController> logger,
+    IShoppingCartService shoppingCartService)
+    : PureBakesBaseController(logger)
 {
 
     public IActionResult Index()
     {
-        var allProducts = shoppingCartService.GetAllProductsInCart();
-        foreach (var item in allProducts)
+        try
         {
-            item.TotalPrice = item.Quantity * item.Product?.Price ?? 0;
-        }
+            var allProducts = shoppingCartService.GetAllProductsInCart();
+            foreach (var item in allProducts)
+            {
+                item.TotalPrice = item.Quantity * item.Product?.Price ?? 0;
+            }
 
-        var cartViewModel = new CartViewModel
+            var cartViewModel = new CartViewModel
+            {
+                ShoppingCartItems = allProducts,
+                TotalCartPrice = allProducts.Sum(x => x.TotalPrice),
+            };
+            return View(cartViewModel);
+        }
+        catch (Exception ex)
         {
-            ShoppingCartItems = allProducts,
-            TotalCartPrice = allProducts.Sum(x => x.TotalPrice),
-        };
-        return View(cartViewModel);
+            logger.LogError(ex, ex.Message);
+            return RedirectToAction(nameof(Error));
+        }
     }
 
     public IActionResult Plus(int cartItemId)
     {
-        var incrementSuccessful = shoppingCartService.IncrementProductQuantity(cartItemId);
-        UpdateSessionCartCountIfOperationSuccessful(incrementSuccessful);
+        try
+        {
+            var incrementSuccessful = shoppingCartService.IncrementProductQuantity(cartItemId);
+            UpdateSessionCartCountIfOperationSuccessful(incrementSuccessful);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            TempData["error"] = $"Something went wrong: {ex.Message}";
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Minus(int cartItemId)
     {
-        var decrementSuccessful = shoppingCartService.DecrementProductQuantity(cartItemId);
-        UpdateSessionCartCountIfOperationSuccessful(decrementSuccessful);
+        try
+        {
+            var decrementSuccessful = shoppingCartService.DecrementProductQuantity(cartItemId);
+            UpdateSessionCartCountIfOperationSuccessful(decrementSuccessful);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            TempData["error"] = $"Something went wrong: {ex.Message}";
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Remove(int cartItemId)
     {
-        var removeSuccessful = shoppingCartService.RemoveProductFromCart(cartItemId);
-        UpdateSessionCartCountIfOperationSuccessful(removeSuccessful);
+        try
+        {
+            var removeSuccessful = shoppingCartService.RemoveProductFromCart(cartItemId);
+            UpdateSessionCartCountIfOperationSuccessful(removeSuccessful);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            TempData["error"] = $"Something went wrong: {ex.Message}";
+        }
         return RedirectToAction(nameof(Index));
     }
 
