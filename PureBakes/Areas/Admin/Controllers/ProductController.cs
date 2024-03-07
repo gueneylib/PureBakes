@@ -62,10 +62,12 @@ public class ProductController(
     {
         try
         {
+            // This is just to demonstrate custom validation.
             if (product.Title.ToLower().Contains("cake"))
             {
                 ModelState.AddModelError("Product.Title", "Cake is not supported in PureBakes!");
             }
+
             if (!ModelState.IsValid)
             {
                 var categories = categoryService.GetAll().Select(x => new SelectListItem(x.Name, x.Id.ToString()));

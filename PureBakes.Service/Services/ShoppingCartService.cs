@@ -39,9 +39,29 @@ public class ShoppingCartService(
                 includeProperties: nameof(Product));
     }
 
-    public void UpdateCartItem(ShoppingCartItem match)
+    public void UpdateCartItem(ShoppingCartItem shoppingCartItem)
     {
-        shoppingCartItemRepository.Update(match);
+        var userId = identityService.GetUserId();
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return;
+        }
+
+        var shoppingCartOfUser = GetShoppingCartByUserId(userId);
+
+        var itemInCart = shoppingCartOfUser.ShoppingCartItem.FirstOrDefault(x =>
+            x.ProductId == shoppingCartItem.ProductId);
+        if (itemInCart is not null)
+        {
+            itemInCart.Quantity += shoppingCartItem.Quantity;
+            shoppingCartItemRepository.Update(itemInCart);
+        }
+        else
+        {
+            shoppingCartItem.ShoppingCartId = shoppingCartOfUser.Id;
+            shoppingCartItemRepository.Add(shoppingCartItem);
+        }
+
         shoppingCartItemRepository.Save();
     }
 

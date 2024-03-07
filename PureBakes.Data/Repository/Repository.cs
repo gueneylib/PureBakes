@@ -4,8 +4,6 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PureBakes.Data.Repository.Interface;
 
-// Read about generic repository here: https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application#create-a-generic-repository
-
 public class Repository<T> : IRepository<T> where T : class
 {
     private readonly PureBakesDbContext _dbContext;

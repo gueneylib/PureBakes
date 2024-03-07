@@ -1,11 +1,13 @@
 namespace PureBakes.Areas.Customer.Controllers;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PureBakes.Models;
 using PureBakes.Service.Constants;
 using PureBakes.Service.Services.Interface;
 
 [Area("Customer")]
+[Authorize]
 public class CartController(
     ILogger<CartController> logger,
     IShoppingCartService shoppingCartService)

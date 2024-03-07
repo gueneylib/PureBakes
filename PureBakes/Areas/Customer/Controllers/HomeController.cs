@@ -10,8 +10,7 @@ using PureBakes.Service.Services.Interface;
 public class HomeController(
     ILogger<HomeController> logger,
     IShoppingCartService shoppingCartService,
-    IProductService productService,
-    IIdentityService identityService)
+    IProductService productService)
     : PureBakesBaseController(logger)
 {
     public IActionResult Index()
@@ -53,33 +52,7 @@ public class HomeController(
     {
         try
         {
-            var userId = identityService.GetUserId();
-            if (string.IsNullOrWhiteSpace(userId))
-            {
-                return View(shoppingCartItem);
-            }
-
-            var shoppingCartOfUser = shoppingCartService.GetShoppingCartByUserId(userId);
-
-            // TODO create factory
-            var match = shoppingCartOfUser.ShoppingCartItem.FirstOrDefault(x =>
-                x.ProductId == shoppingCartItem.ProductId);
-            if (match is not null)
-            {
-                match.Quantity += shoppingCartItem.Quantity;
-            }
-            else
-            {
-                match = new ShoppingCartItem
-                {
-                    ProductId = shoppingCartItem.ProductId,
-                    Quantity = shoppingCartItem.Quantity,
-                    ShoppingCartId = shoppingCartOfUser.Id
-                };
-                // shoppingCartOfUser.ShoppingCartItem.Add(match);
-            }
-
-            shoppingCartService.UpdateCartItem(match);
+            shoppingCartService.UpdateCartItem(shoppingCartItem);
 
             var currentCartProductsCount = shoppingCartService.GetShoppingCartProductsQuantity();
             HttpContext.Session.SetInt32(SessionConstants.SessionCartCount, currentCartProductsCount);

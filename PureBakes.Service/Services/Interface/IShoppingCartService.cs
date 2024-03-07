@@ -6,7 +6,7 @@ public interface IShoppingCartService
 {
     ShoppingCart GetShoppingCartByUserId(string userId);
     int GetShoppingCartProductsQuantity();
-    void UpdateCartItem(ShoppingCartItem match);
+    void UpdateCartItem(ShoppingCartItem shoppingCartItem);
     IEnumerable<ShoppingCartItem> GetAllProductsInCart();
     bool IncrementProductQuantity(int cartItemId);
     bool DecrementProductQuantity(int cartItemId);

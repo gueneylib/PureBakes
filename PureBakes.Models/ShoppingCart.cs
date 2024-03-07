@@ -19,16 +19,3 @@ public class ShoppingCart
     [NotMapped]
     public double TotalPrice { get; set; }
 }
-
-// How can i solve this?
-// Create a list of products here for mapping
-// create a factory to create itemviewmodel
-// dont reference itemvm here because it has to be mapped.
-
-// do it like always: get the cart and the products related to the cart id. then call the factory to create the itemvm with count etc.
-// then use this for the view.
-
-
-// three tables:
-// Shoppingcart with only one user id, list of ShoppingCartItem (foreign key id of the ShoppingCartItem table)
-// ShoppingCartItem with one Product (foreign key of Product id) and one quantity of the product
