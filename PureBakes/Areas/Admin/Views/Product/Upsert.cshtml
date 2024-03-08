@@ -1,0 +1,51 @@
+@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Add/Edit Product";
+}
+
+<div class="container mt-5">
+    @* TODO add logic to determine if product is being added or edited *@
+    <h1>Add/Edit Product</h1>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Product.Id"/>
+                <input asp-for="Product.ImageUrl" hidden/>
+                <div class="mb-3">
+                    <label asp-for="Product.Title" class="form-label">Title</label>
+                    <input type="text" asp-for="Product.Title" class="form-control"/>
+                    <span asp-validation-for="Product.Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Product.Description" class="form-label">Description</label>
+                    <input type="text" asp-for="Product.Description" class="form-control"/>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Product.Price" class="form-label">Price</label>
+                    <input type="number" asp-for="Product.Price" class="form-control" step="0.01" inputmode="decimal" min="0"/>
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+                @* TODO make UI elements fancy like this *@
+                <div class="form-floating py-2 col-12">
+                    <select asp-for="@Model.Product.CategoryId" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
+                        <option disabled selected>--Select Category--</option>
+                    </select>
+                    <label asp-for="Product.CategoryId" class="ms-2"></label>
+                    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input type="file" name="file" class="form-control border-0 shadow"/>
+                    <label asp-for="Product.ImageUrl" class="ms-2"></label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
