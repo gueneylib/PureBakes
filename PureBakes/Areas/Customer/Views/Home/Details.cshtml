@@ -18,10 +18,10 @@
                 <input type="hidden" asp-for="@Model.Product != null ? Model.Product.ImageUrl : null" />
                 <input type="hidden" asp-for="@Model.Product != null ? Model.Product.Price : 0" />
                 <div class="form-group">
-                    <label for="quantity">Quantity:</label>
+                    <label for="Quantity">Quantity:</label>
                     <input type="number" asp-for="Quantity" name="quantity" class="form-control" value="1">
                 </div>
-                <button type="submit" class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
+                <button type="submit" class="btn btn-primary bg-gradient">
                     Add to Cart
                 </button>
             </div>
