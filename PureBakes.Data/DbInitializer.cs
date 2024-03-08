@@ -17,10 +17,12 @@ public class DbInitializer(
         if (!dbContext.Products.Any())
         {
             dbContext.AddRange(
-                new Product{ Title = "Rye Sourdough Bread", Category = Categories["Bread"], Price = 5.99 },
-                new Product{ Title = "Ciabatta", Category = Categories["Bread"], Price = 2.99 },
-                new Product{ Title = "Neapolitan Pizza", Category = Categories["Pizza"], Price = 8.99 },
-                new Product{ Title = "Roman Pizza", Category = Categories["Pizza"], Price = 8.99 }
+                new Product{ Title = "Rye Sourdough Bread", Description = "Rye is very rich in flavour and is very healthy", Category = Categories["Bread"], Price = 5.99, ImageUrl = "/images/product/ryeSourdough.jpg" },
+                new Product{ Title = "Ciabatta", Description = "Italian Bread with high hydration" , Category = Categories["Bread"], Price = 2.99, ImageUrl = "/images/product/ciabatta.jpg" },
+                new Product{ Title = "Neapolitan Pizza", Description = "Pizza napoletana, the first pizza ever made!" , Category = Categories["Pizza"], Price = 8.99, ImageUrl = "/images/product/neapolitan.jpg" },
+                new Product{ Title = "Roman Pizza", Description = "Pizza a la roma" , Category = Categories["Pizza"], Price = 8.99, ImageUrl = "/images/product/romanPizza.jpg" },
+                new Product{ Title = "Simit", Description = "turkish bagels with sesame." , Category = Categories["Bread"], Price = 0.99, ImageUrl = "/images/product/simit.jpg" },
+                new Product{ Title = "Brezel", Description = "German knot-shaped pastry" , Category = Categories["Bread"], Price = 1.49, ImageUrl = "/images/product/brezel.jpg" }
             );
         }
 
