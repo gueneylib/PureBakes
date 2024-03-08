@@ -18,11 +18,12 @@ public class DbInitializer(
         {
             dbContext.AddRange(
                 new Product{ Title = "Rye Sourdough Bread", Category = Categories["Bread"], Price = 5.99 },
-                new Product{ Title = "Neapolitan Pizza", Category = Categories["Pizza"], Price = 8.99 }
+                new Product{ Title = "Ciabatta", Category = Categories["Bread"], Price = 2.99 },
+                new Product{ Title = "Neapolitan Pizza", Category = Categories["Pizza"], Price = 8.99 },
+                new Product{ Title = "Roman Pizza", Category = Categories["Pizza"], Price = 8.99 }
             );
         }
 
-        // TODO resolve circular reference to use RoleConstants in Service project
         if (!roleManager.RoleExistsAsync("Customer").GetAwaiter().GetResult()) {
             roleManager.CreateAsync(new IdentityRole("Customer")).GetAwaiter().GetResult();
             roleManager.CreateAsync(new IdentityRole("Employee")).GetAwaiter().GetResult();
