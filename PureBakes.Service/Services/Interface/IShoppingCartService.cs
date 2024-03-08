@@ -4,7 +4,6 @@ using PureBakes.Models;
 
 public interface IShoppingCartService
 {
-    ShoppingCart GetShoppingCartByUserId(string userId);
     int GetShoppingCartProductsQuantity();
     void UpdateCartItem(ShoppingCartItem shoppingCartItem);
     IEnumerable<ShoppingCartItem> GetAllProductsInCart();

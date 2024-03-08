@@ -19,7 +19,7 @@
                         <img alt="image" src="@product.ImageUrl" class="card-img-top rounded"/>
                         <div class="card-body">
                             <h5 class="card-title text-center">@product.Title</h5>
-                            <p class="card-text text-center">Price: $@product.Price.ToString("c")</p>
+                            <p class="card-text text-center">Price: @product.Price.ToString("C")</p>
                             <a asp-action="Details"
                                asp-route-productId="@product.Id"
                                class="btn btn-primary bg-gradient form-control">
