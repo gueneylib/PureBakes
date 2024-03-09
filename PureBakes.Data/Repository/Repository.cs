@@ -39,19 +39,6 @@ public class Repository<T> : IRepository<T> where T : class
         }
 
         return query.ToList();
-
-        // var tmp = new List<T>();
-        // foreach (var item in query)
-        // {
-        //     tmp.Add(Get(filter, includeProperties, true));
-        // }
-        //
-        // if (orderBy != null)
-        // {
-        //     return orderBy(tmp.AsQueryable()).ToList();
-        // }
-        //
-        // return tmp.AsEnumerable();
     }
 
     public T? Get(Expression<Func<T, bool>>? filter,

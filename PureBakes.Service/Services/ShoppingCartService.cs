@@ -9,20 +9,6 @@ public class ShoppingCartService(
     IShoppingCartItemRepository shoppingCartItemRepository,
     IIdentityService identityService) : IShoppingCartService
 {
-    public ShoppingCart GetShoppingCartByUserId(string userId)
-    {
-        var shoppingCartOfUser = shoppingCartRepository
-            .Get(x => x.PureBakesUserId == userId,
-                nameof(ShoppingCart.ShoppingCartItem));
-
-        if (shoppingCartOfUser is null)
-        {
-            return CreateShoppingCartForUser(userId);
-        }
-
-        return shoppingCartOfUser;
-    }
-
     public int GetShoppingCartProductsQuantity()
     {
         var currentCartProductsCount = GetAllProductsInCart().Sum(product => product.Quantity);
@@ -100,6 +86,20 @@ public class ShoppingCartService(
         shoppingCartItemRepository.Update(cartItem);
         shoppingCartItemRepository.Save();
         return true;
+    }
+
+    private ShoppingCart GetShoppingCartByUserId(string userId)
+    {
+        var shoppingCartOfUser = shoppingCartRepository
+            .Get(x => x.PureBakesUserId == userId,
+                nameof(ShoppingCart.ShoppingCartItem));
+
+        if (shoppingCartOfUser is null)
+        {
+            return CreateShoppingCartForUser(userId);
+        }
+
+        return shoppingCartOfUser;
     }
 
     private ShoppingCart CreateShoppingCartForUser(string userId)
