@@ -10,4 +10,5 @@ public interface IProductService
     void Update(Product product);
     bool Remove(int productId);
     string GetImageUrlOfProduct(int productId);
+    bool UserHasNoPermissionForProduct(string imageUrl);
 }

@@ -44,6 +44,7 @@ public class DbInitializer(
             roleManager.CreateAsync(new IdentityRole("Customer")).GetAwaiter().GetResult();
             roleManager.CreateAsync(new IdentityRole("Employee")).GetAwaiter().GetResult();
             roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
+            roleManager.CreateAsync(new IdentityRole("SuperAdmin")).GetAwaiter().GetResult();
         }
 
         dbContext.SaveChanges();

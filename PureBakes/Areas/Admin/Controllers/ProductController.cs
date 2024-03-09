@@ -9,7 +9,7 @@ using PureBakes.Service.Constants;
 using PureBakes.Service.Services.Interface;
 
 [Area("Admin")]
-[Authorize(Roles = RoleConstants.Admin)]
+[Authorize(Roles = $"{RoleConstants.Admin},{RoleConstants.SuperAdmin}")]
 public class ProductController(
     ILogService<ProductController> logService,
     IProductService productService,
@@ -62,6 +62,11 @@ public class ProductController(
     {
         try
         {
+            if (productService.UserHasNoPermissionForProduct(product.ImageUrl ?? string.Empty))
+            {
+                return LocalRedirect("/Identity/Account/AccessDenied");
+            }
+
             // This is just to demonstrate custom validation.
             if (product.Title.ToLower().Contains("cake"))
             {

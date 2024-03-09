@@ -2,11 +2,13 @@ namespace PureBakes.Service.Services;
 
 using PureBakes.Data.Repository.Interface;
 using PureBakes.Models;
+using PureBakes.Service.Constants;
 using PureBakes.Service.Services.Interface;
 
 public class ProductService(
     IProductRepository productRepository,
-    IFileService fileService) : IProductService
+    IFileService fileService,
+    IIdentityService identityService) : IProductService
 {
     public IEnumerable<Product> GetAll()
     {
@@ -33,7 +35,13 @@ public class ProductService(
     public bool Remove(int productId)
     {
         var product = Get(productId);
+
         if (product is null)
+        {
+            return false;
+        }
+
+        if (UserHasNoPermissionForProduct(product.ImageUrl ?? string.Empty))
         {
             return false;
         }
@@ -58,5 +66,22 @@ public class ProductService(
         }
 
         return string.Empty;
+    }
+
+    public bool UserHasNoPermissionForProduct(string imageUrl)
+    {
+        var role = identityService.GetUserRole();
+        if (imageUrl == "/images/product/ryeSourdough.jpg" ||
+            imageUrl == "/images/product/ciabatta.jpg" ||
+            imageUrl == "/images/product/neapolitan.jpeg" ||
+            imageUrl == "/images/product/romanPizza.jpg" ||
+            imageUrl == "/images/product/simit.jpg" ||
+            imageUrl == "/images/product/brezel.jpg" &&
+            role != RoleConstants.SuperAdmin)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
