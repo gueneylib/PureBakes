@@ -24,7 +24,7 @@ public class FileService(
     public async Task<string?> AddImageToProduct(Stream imageStream, string fileName)
     {
         // Get the absolute path to the "images" folder
-        var imagePath = Path.Combine(webHostEnvironment.WebRootPath, _productRootPath.Trim('/'));
+        var imagePath = Path.Combine(webHostEnvironment.WebRootPath, _productRootPath.Trim(Path.DirectorySeparatorChar));
 
         // Combine with the provided file name
         fileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName);
