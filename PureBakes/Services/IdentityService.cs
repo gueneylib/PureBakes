@@ -15,6 +15,6 @@ public class IdentityService(IHttpContextAccessor httpContextAccessor) : IIdenti
     public string GetUserRole()
     {
         var principalUser = httpContextAccessor.HttpContext?.User;
-        return principalUser?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        return principalUser?.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
     }
 }
